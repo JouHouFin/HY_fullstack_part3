@@ -1,0 +1,19 @@
+{
+  "name": "hy_fullstack_part3",
+  "version": "0.0.1",
+  "description": "University of Helsinki Full Stack Open part 3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juho Holmi",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
