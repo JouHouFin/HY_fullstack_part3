@@ -2,9 +2,6 @@ const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
 
-morgan.token('body', function (req, res) { if (req.method === 'POST') {return JSON.stringify(req.body)} return null })
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
-
 let persons = [
 	{ 
 		"name": "Arto Hellas", 
@@ -29,8 +26,11 @@ let persons = [
 ]
 const app = express()
 
+morgan.token('body', function (req, res) { if (req.method === 'POST') {return JSON.stringify(req.body)} return null })
+
 app.use(cors())
 app.use(express.json()) 
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 const generateId = () => {
   return Math.floor(Math.random() * Math.floor(65535));
