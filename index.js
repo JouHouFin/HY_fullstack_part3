@@ -2,7 +2,7 @@ const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
 
-let persons = [
+/* let persons = [
 	{ 
 		"name": "Arto Hellas", 
 		"number": "040-123456",
@@ -23,11 +23,13 @@ let persons = [
 		"number": "39-23-6423122",
 		"id": 4
 	}
-]
+] */
+let persons = []
 const app = express()
 
 morgan.token('body', function (req, res) { if (req.method === 'POST') {return JSON.stringify(req.body)} return null })
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(express.json()) 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
@@ -36,9 +38,9 @@ const generateId = () => {
   return Math.floor(Math.random() * Math.floor(65535));
 }
 
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
   res.send('<h1>Contact app backend</h1>')
-})
+}) */
 
 app.get('/info', (req, res) => {
 	const date = new Date().toString()
