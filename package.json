@@ -11,11 +11,11 @@
   "author": "Juho Holmi",
   "license": "MIT",
   "devDependencies": {
-    "morgan": "^1.10.0",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "morgan": "^1.10.0",
     "express": "^4.17.1"
   },
   "engines": {
