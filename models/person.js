@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
 
 dbUrl = process.env.MONGODB_URI
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
