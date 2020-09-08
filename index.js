@@ -1,18 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
-const getConnUrl = require('./readConfig.js')
-
-dbUrl = getConnUrl()
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
-
-const Person = mongoose.model('Person', personSchema)
+const Person = require('./models/person')
 
 /* if (process.argv.length < 3) {
 	Person.find({}).then(result => {
