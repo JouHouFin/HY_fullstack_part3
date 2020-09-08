@@ -57,15 +57,14 @@ app.use(cors())
 app.use(express.json()) 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-const generateId = () => {
-  return Math.floor(Math.random() * Math.floor(65535));
-}
-
 app.get('/info', (req, res) => {
-	const date = new Date().toString()
-  res.send(
-		`Phonebook has info for ${persons.length} people<br />${date}`
-	)
+  const date = new Date().toString()
+
+  Person.find({}).then(persons => {
+    res.send(
+      `Phonebook has info for ${persons.length} people<br />${date}`
+    )  
+  })
 })
 
 app.get('/api/persons', (req, res) => {
@@ -75,19 +74,23 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {    
-    response.json(person)  
-  } else {    
-    response.status(404).end()  
-  }
+  Person.findById(request.params.id).then(person => {
+    if (person) {    
+      response.json(person)  
+    } else {    
+      response.status(404).end()  
+    }
+  })
+  .catch(error => {
+    console.log(error)      
+    response.status(400).send({ error: 'malformatted id' })
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   
-  persons = persons.filter(person => person.id !== id)
+  Person.deleteOne()
   response.status(204).end()
 })
 
@@ -98,19 +101,15 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'name missing' })
   } else if (!body.number) {
     return response.status(400).json({ error: 'number missing' })
-  } else if (persons.find(person => person.name === body.name)) {
-    return response.status(400).json({ error: 'name must be unique' })
   } 
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  }
-
-  persons = persons.concat(person)
-
-  response.json(person)
+  })
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 const unknownEndpoint = (request, response) => {
