@@ -1,7 +1,40 @@
 const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const getConnUrl = require('./readConfig.js')
 
+dbUrl = getConnUrl()
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+})
+
+const Person = mongoose.model('Person', personSchema)
+
+/* if (process.argv.length < 3) {
+	Person.find({}).then(result => {
+		console.log(`Phonebook:`)
+		result.forEach(person => {
+			console.log(`${person.name} ${person.number}`)
+		})
+		mongoose.connection.close()
+	})
+} else {
+	const name = process.argv[2]
+	const number = process.argv[3]
+	const person = new Person({
+		name: name,
+		number: number
+	})
+
+	person.save().then(response => {
+		console.log(`added ${name} with number ${number} to phonebook`)
+		mongoose.connection.close()
+	})
+}
 let persons = [
 	{ 
 		"name": "Arto Hellas", 
@@ -23,7 +56,7 @@ let persons = [
 		"number": "39-23-6423122",
 		"id": 4
 	}
-]
+] */
 
 const app = express()
 
@@ -38,10 +71,6 @@ const generateId = () => {
   return Math.floor(Math.random() * Math.floor(65535));
 }
 
-/* app.get('/', (req, res) => {
-  res.send('<h1>Contact app backend</h1>')
-}) */
-
 app.get('/info', (req, res) => {
 	const date = new Date().toString()
   res.send(
@@ -50,7 +79,9 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
