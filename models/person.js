@@ -3,6 +3,12 @@ mongoose.set('useFindAndModify', false)
 
 dbUrl = process.env.MONGODB_URI
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(result => {    
+    console.log('connected to MongoDB')  
+})  
+.catch((error) => {    
+    console.log('error connecting to MongoDB:', error.message)  
+})
 
 const personSchema = new mongoose.Schema({
   name: String,
