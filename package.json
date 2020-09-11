@@ -10,11 +10,13 @@
     "build:ui": "rm -rf build && cd ../HY_fullstack/osa2/puhelinluettelo/ && npm run build --prod && cp -r build ../../../HY_fullstack_part3/",
     "deploy": "git push",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "author": "Juho Holmi",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^7.8.1",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
